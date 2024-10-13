@@ -10,9 +10,9 @@ interface TarefaItemProps {
 }
 
 const TarefaItem: React.FC<TarefaItemProps> = ({ id, titulo, onUpdate, onDelete }) => {
-  const [isEditMode, setIsEditMode] = useState(false); // Alterna entre modo de edição e visualização
-  const [newTarefa, setNewTarefa] = useState(titulo); // Mantém o valor da nova tarefa
-  const [isModalOpen, setIsModalOpen] = useState(false); // Controla a visibilidade do modal
+  const [isEditMode, setIsEditMode] = useState(false); 
+  const [newTarefa, setNewTarefa] = useState(titulo); 
+  const [isModalOpen, setIsModalOpen] = useState(false); 
 
   // Função para lidar com a atualização da tarefa
   const handleUpdate = async () => {
@@ -21,8 +21,8 @@ const TarefaItem: React.FC<TarefaItemProps> = ({ id, titulo, onUpdate, onDelete 
     }
 
     try {
-      await onUpdate(id, newTarefa); // Chama a função de atualização passada via props
-      setIsEditMode(false); // Sai do modo de edição após a atualização bem-sucedida
+      await onUpdate(id, newTarefa); 
+      setIsEditMode(false); 
     } catch (error) {
       alert("Erro ao atualizar a tarefa."); // Exibe um erro caso a atualização falhe
     }
@@ -52,7 +52,7 @@ const TarefaItem: React.FC<TarefaItemProps> = ({ id, titulo, onUpdate, onDelete 
         <Text flex={3} fontSize={18}>{titulo}</Text>
       )}
       
-      {/* Botões de Editar e Excluir */}
+     
       <HStack space={2}>
         <IconButton
           icon={<AntDesign name="edit" size={24} />}
@@ -82,7 +82,7 @@ const TarefaItem: React.FC<TarefaItemProps> = ({ id, titulo, onUpdate, onDelete 
               </Button>
             </Button.Group>
           </Modal.Footer>
-        </Modal.Content>
+        </Modal.Content>  
       </Modal>
     </Box>
   );

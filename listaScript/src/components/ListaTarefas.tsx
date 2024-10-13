@@ -109,7 +109,7 @@ const ListaTarefas: React.FC = () => {
         throw new Error(errorData.error || 'Erro ao excluir tarefa');
       }
 
-      // Atualiza a lista de tarefas localmente
+     
       setTarefas(tarefas.filter((item) => item.id !== id));
     } catch (error) {
       console.error('Erro ao excluir tarefa:', error);
