@@ -5,7 +5,6 @@ Bem-vindo ao **Aplicativo de Gerenciamento de Tarefas**, um aplicativo de React 
 ## Índice
 
 - [Funcionalidades](#funcionalidades)
-- [Capturas de Tela](#capturas-de-tela)
 - [Instalação](#instalação)
 - [Uso](#uso)
 - [Tecnologias Utilizadas](#tecnologias-utilizadas)
@@ -20,18 +19,6 @@ Bem-vindo ao **Aplicativo de Gerenciamento de Tarefas**, um aplicativo de React 
 - **Listagem de Tarefas**: Exibe todas as tarefas em uma lista simples e organizada.
 - **Design Responsivo**: Interface moderna, com cores personalizadas e layout adaptado para diferentes dispositivos.
 - **Armazenamento Local**: Utilização de AsyncStorage para armazenar o token de autenticação localmente.
-
----
-
-## Capturas de Tela
-
-
-### Tela de Login
-![Tela de Login](assets/images/printLogin.png)
-
-### Tela de Tarefas
-![Tela de Tarefas](assets/images/printTarefas.png)
-
 
 ---
 
