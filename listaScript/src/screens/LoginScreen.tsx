@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, Text, StyleSheet } from 'react-native';
+import { View, TextInput, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../navigation/types'; // Importe o tipo
 import AsyncStorage from "@react-native-community/async-storage";
@@ -39,6 +39,13 @@ const LoginScreen: React.FC = () => {
 
   return (
     <View style={styles.container}>
+      
+      <Image
+        source={require('../../assets/images/TechLogo.png')} 
+        style={styles.logo}
+        resizeMode="contain" // Ajusta a imagem ao container sem distorcer
+      />
+
       <View style={styles.card}>
         <Text style={styles.title}>Login</Text>
 
@@ -59,9 +66,9 @@ const LoginScreen: React.FC = () => {
           placeholderTextColor="#A9A9A9"
         />
 
-        <View style={styles.buttonContainer}>
-          <Button title="Login" onPress={handleLogin} color="#10A37F" />
-        </View>
+        <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+          <Text style={styles.loginButtonText}>Login</Text>
+        </TouchableOpacity>
 
         {error && <Text style={styles.errorText}>{error}</Text>}
       </View>
@@ -74,18 +81,26 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#202123', // Cor de fundo semelhante à versão dark do GPT
+    backgroundColor: '#202123',
+    paddingVertical: 40, // Adiciona um pouco de espaçamento vertical geral
   },
   card: {
     width: '90%',
     padding: 20,
     borderRadius: 10,
-    backgroundColor: '#2C2C2C', // Cor de fundo do card (cinza escuro)
-    shadowColor: '#000', // Sombra sutil no card
+    backgroundColor: '#2C2C2C',
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.8,
     shadowRadius: 4,
-    elevation: 5, // Sombra no Android
+    elevation: 5,
+    alignItems: 'center', // Centraliza o conteúdo dentro do card
+  },
+  logo: {
+    width: 150,
+    height: 150,
+    marginBottom: 30, // Aumenta a margem abaixo da logo
+    marginTop: -30,  // Levanta a logo mais próximo do topo
   },
   title: {
     fontSize: 26,
@@ -98,17 +113,25 @@ const styles = StyleSheet.create({
     width: '100%',
     padding: 15,
     borderWidth: 1,
-    borderColor: '#3E3F42', // Borda cinza mais escura
+    borderColor: '#3E3F42',
     borderRadius: 8,
     fontSize: 16,
-    color: '#FFFFFF', // Texto branco
+    color: '#FFFFFF',
     marginBottom: 15,
-    backgroundColor: '#3E3F42', // Cor de fundo dos inputs
+    backgroundColor: '#3E3F42',
   },
-  buttonContainer: {
+  loginButton: {
+    backgroundColor: '#B556F6',
+    paddingVertical: 15,
+    paddingHorizontal: 80, // Aumenta a largura do botão
     borderRadius: 8,
-    overflow: 'hidden', // Garante que o botão siga o formato arredondado
-    marginBottom: 15,
+    marginTop: 15,
+    alignItems: 'center',
+  },
+  loginButtonText: {
+    color: '#FFFFFF',
+    fontSize: 18,
+    fontWeight: '600',
   },
   errorText: {
     color: 'red',
