@@ -1,5 +1,21 @@
 # Aplicativo de Gerenciamento de Tarefas
 
+link Github: https://github.com/ArtFiorindo/AulaMobile
+
+---
+
+## Equipe
+
+> Artur Lopes Fiorindo » 53481
+
+
+> Eduardo Felipe Nunes Função » 553362 
+
+
+> Jhoe Yoshio Kochi Hashimoto 553831
+
+---
+
 Bem-vindo ao **Aplicativo de Gerenciamento de Tarefas**, um aplicativo de React Native que permite aos usuários gerenciar suas tarefas diárias de forma eficiente. Com autenticação segura, adição de tarefas e uma interface intuitiva, este aplicativo foi projetado para ajudar você a organizar suas atividades com simplicidade e elegância.
 
 ## Índice
