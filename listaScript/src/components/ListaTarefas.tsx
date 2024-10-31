@@ -14,14 +14,14 @@ const ListaTarefas: React.FC = () => {
   const [tarefas, setTarefas] = useState<Tarefa[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const navigation = useNavigation<any>();
 
-  // Função para buscar tarefas
   const fetchTarefas = async () => {
     try {
-      setLoading(true);
+      setLoading(true); // Inicia o loading quando recarrega
       const token = await AsyncStorage.getItem('token');
       if (!token) {
-        setError('Usuário não autenticado.');
+        navigation.navigate('LoginScreen');
         return;
       }
 
@@ -49,54 +49,19 @@ const ListaTarefas: React.FC = () => {
     fetchTarefas();
   }, []);
 
-  // Função para atualizar a lista após adicionar uma tarefa
   const handleAdicionarTarefa = () => {
-    fetchTarefas(); // Recarrega a lista de tarefas após adicionar uma nova
+    fetchTarefas(); // Atualiza a lista quando uma nova tarefa é adicionada
   };
 
-  // Função para atualizar uma tarefa existente
-  const handleUpdateTarefa = async (id: number, tarefa: string) => {
-    try {
-      const token = await AsyncStorage.getItem('token');
-      if (!token) {
-        console.error('Token não encontrado!');
-        return;
-      }
+  const handleDelete = async (id: number) => {
+    const token = await AsyncStorage.getItem('token');
 
-      const response = await fetch(`http://localhost:3000/api/tarefas/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ tarefa }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Erro ao atualizar tarefa');
-      }
-
-      // Atualiza a lista de tarefas localmente
-      const updatedTarefas = tarefas.map((item) =>
-        item.id === id ? { ...item, tarefa } : item
-      );
-      setTarefas(updatedTarefas);
-    } catch (error) {
-      console.error('Erro ao atualizar tarefa:', error);
-      alert(error.message); // Mostra a mensagem de erro para o usuário
+    if (!token) {
+      console.error('Token não encontrado!');
+      return;
     }
-  };
 
-  // Função para deletar uma tarefa
-  const handleDeleteTarefa = async (id: number) => {
     try {
-      const token = await AsyncStorage.getItem('token');
-      if (!token) {
-        console.error('Token não encontrado!');
-        return;
-      }
-
       const response = await fetch(`http://localhost:3000/api/tarefas/${id}`, {
         method: 'DELETE',
         headers: {
@@ -104,21 +69,84 @@ const ListaTarefas: React.FC = () => {
         },
       });
 
-      if (!response.ok) {
+      if (response.ok) {
+        setTarefas(prevTarefas => prevTarefas.filter(tarefa => tarefa.id !== id));
+        Toast.show({
+          description: 'Tarefa excluída com sucesso!',
+          bgColor: "green.500"
+        });
+      } else {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'Erro ao excluir tarefa');
+        console.error('Erro ao excluir a tarefa:', errorData);
+        Toast.show({
+          description: 'Não foi possível excluir a tarefa. Tente novamente.',
+          bgColor: "red.500"
+        });
+      }
+    } catch (error) {
+      console.error('Erro na requisição:', error);
+      Toast.show({
+        description: 'Ocorreu um erro. Tente novamente.',
+        bgColor: "red.500"
+      });
+    }
+  };
+
+  const handleUpdate = async (id: number, novoTitulo: string) => {
+    try {
+      // Obtém o token de autenticação do AsyncStorage
+      const token = await AsyncStorage.getItem('token');
+
+      if (!token) {
+        console.error('Token não encontrado!');
+        Toast.show({
+          description: 'Erro de autenticação. Faça login novamente.',
+          bgColor: "red.500",
+        });
+        navigation.navigate('LoginScreen');
+        return;
       }
 
-     
-      setTarefas(tarefas.filter((item) => item.id !== id));
+      // Faz a requisição PUT para atualizar a tarefa
+      const response = await fetch(`http://localhost:3000/api/tarefas/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ tarefa: novoTitulo }), // Enviando o novo título no formato esperado
+      });
+
+      // Verifica a resposta da API
+      if (response.ok) {
+        setTarefas(prevTarefas =>
+          prevTarefas.map(tarefa =>
+            tarefa.id === id ? { ...tarefa, tarefa: novoTitulo } : tarefa
+          )
+        );
+        Toast.show({
+          description: 'Tarefa atualizada com sucesso!',
+          bgColor: "green.500",
+        });
+      } else {
+        const errorData = await response.json();
+        console.error('Erro ao atualizar a tarefa:', errorData);
+        Toast.show({
+          description: 'Erro ao atualizar a tarefa. Verifique os dados e tente novamente.',
+          bgColor: "red.500",
+        });
+      }
     } catch (error) {
-      console.error('Erro ao excluir tarefa:', error);
-      alert(error.message);
+      console.error('Erro ao fazer a requisição:', error);
+      Toast.show({
+        description: 'Erro ao se comunicar com o servidor. Tente novamente.',
+        bgColor: "red.500",
+      });
     }
   };
 
   if (loading) {
-    return <Spinner />;
+    return <Spinner color="blue.500" />;
   }
 
   if (error) {
@@ -130,24 +158,21 @@ const ListaTarefas: React.FC = () => {
   }
 
   return (
-    <>
-      {/* Adicionando o componente para adicionar tarefas */}
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <AdicionarTarefa onAdicionarTarefa={handleAdicionarTarefa} />
-
-      {/* Lista de tarefas */}
       <FlatList
         data={tarefas}
         renderItem={({ item }) => (
           <TarefaItem
             id={item.id}
             titulo={item.tarefa}
-            onUpdate={handleUpdateTarefa}
-            onDelete={handleDeleteTarefa}
+            onUpdate={(id, novoTitulo) => handleUpdate(id, novoTitulo)}
+            onDelete={handleDelete}
           />
         )}
         keyExtractor={(item) => item.id.toString()}
       />
-    </>
+    </ScrollView>
   );
 };
 

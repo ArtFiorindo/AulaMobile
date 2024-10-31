@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { View, TextInput, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, TextInput, Button, Text, ImageBackground, StyleSheet } from 'react-native';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { RootStackParamList } from '../navigation/types'; // Importe o tipo
-import AsyncStorage from "@react-native-community/async-storage";
+import { RootStackParamList } from '../navigation/types';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const LoginScreen: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -20,7 +20,7 @@ const LoginScreen: React.FC = () => {
         body: JSON.stringify({
           username,
           password,
-          role: 'user',
+          role: 'user'
         }),
       });
 
@@ -38,104 +38,63 @@ const LoginScreen: React.FC = () => {
   };
 
   return (
-    <View style={styles.container}>
-      
-      <Image
-        source={require('../../assets/images/TechLogo.png')} 
-        style={styles.logo}
-        resizeMode="contain" // Ajusta a imagem ao container sem distorcer
-      />
-
-      <View style={styles.card}>
-        <Text style={styles.title}>Login</Text>
-
+    <ImageBackground
+      source={require('../../assets/bg-tela-login.jpg')}
+      style={styles.background}
+    >
+      <View style={styles.container}>
+        <Text style={styles.title}>Bem-vindo!</Text>
         <TextInput
           placeholder="Username"
           value={username}
           onChangeText={setUsername}
           style={styles.input}
-          placeholderTextColor="#A9A9A9"
         />
-
         <TextInput
           placeholder="Senha"
           value={password}
           onChangeText={setPassword}
           secureTextEntry
           style={styles.input}
-          placeholderTextColor="#A9A9A9"
         />
-
-        <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-          <Text style={styles.loginButtonText}>Login</Text>
-        </TouchableOpacity>
-
-        {error && <Text style={styles.errorText}>{error}</Text>}
+        <Button title="Login" onPress={handleLogin} />
+        {error && <Text style={styles.error}>{error}</Text>}
       </View>
-    </View>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  background: {
     flex: 1,
+    resizeMode: 'cover', // Ajusta a imagem para cobrir a tela inteira
     justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#202123',
-    paddingVertical: 40, // Adiciona um pouco de espaçamento vertical geral
   },
-  card: {
-    width: '90%',
+  container: {
+    backgroundColor: 'rgba(255, 255, 255, 0.8)', // Fundo branco com transparência
     padding: 20,
+    marginHorizontal: 20,
     borderRadius: 10,
-    backgroundColor: '#2C2C2C',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
-    shadowRadius: 4,
-    elevation: 5,
-    alignItems: 'center', // Centraliza o conteúdo dentro do card
-  },
-  logo: {
-    width: 150,
-    height: 150,
-    marginBottom: 30, // Aumenta a margem abaixo da logo
-    marginTop: -30,  // Levanta a logo mais próximo do topo
+    alignItems: 'center',
   },
   title: {
-    fontSize: 26,
-    fontWeight: '600',
-    color: '#FFFFFF',
-    textAlign: 'center',
+    fontSize: 24,
+    fontWeight: 'bold',
     marginBottom: 20,
+    color: '#333',
   },
   input: {
     width: '100%',
-    padding: 15,
+    height: 40,
+    borderColor: '#ccc',
     borderWidth: 1,
-    borderColor: '#3E3F42',
-    borderRadius: 8,
-    fontSize: 16,
-    color: '#FFFFFF',
-    marginBottom: 15,
-    backgroundColor: '#3E3F42',
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginBottom: 10,
+    backgroundColor: '#fff',
   },
-  loginButton: {
-    backgroundColor: '#B556F6',
-    paddingVertical: 15,
-    paddingHorizontal: 80, // Aumenta a largura do botão
-    borderRadius: 8,
-    marginTop: 15,
-    alignItems: 'center',
-  },
-  loginButtonText: {
-    color: '#FFFFFF',
-    fontSize: 18,
-    fontWeight: '600',
-  },
-  errorText: {
+  error: {
     color: 'red',
-    textAlign: 'center',
     marginTop: 10,
   },
 });

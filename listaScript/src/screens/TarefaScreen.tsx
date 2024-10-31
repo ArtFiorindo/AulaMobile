@@ -1,19 +1,14 @@
-import React from 'react'; // Importa a biblioteca React para criar componentes.
-import { View } from 'native-base'; // Importa o componente View da biblioteca native-base.
-import AdicionarTarefa from '../components/AdicionarTarefa'; // Importa o componente para adicionar tarefas.
-import ListaTarefas from '../components/ListaTarefas'; // Importa o componente que exibe a lista de tarefas.
+import React from 'react';
+import { View } from 'native-base';
+import AdicionarTarefa from '../components/AdicionarTarefa';
+import ListaTarefas from '../components/ListaTarefas';
 
-const TarefasScreen: React.FC = () => { // Declara o componente TarefasScreen como um componente funcional.
+const TarefasScreen: React.FC = () => {
   return (
-    <View style={{ flex: 1, backgroundColor: '#402291' }}> {/* Define o estilo do container principal. */}
-      {/* Formulário de Adicionar Tarefa */}
-      <AdicionarTarefa onAdicionarTarefa={function (): void {
-              throw new Error('Function not implemented.');
-          } } /> {/* Renderiza o componente que permite adicionar novas tarefas. */}
-      {/* Lista de Tarefas */}
-      <ListaTarefas /> {/* Renderiza o componente que exibe a lista de tarefas existentes. */}
+    <View style={{ flex: 1, backgroundColor: '#402291' }}>
+      <ListaTarefas />
     </View>
   );
 };
 
-export default TarefasScreen; // Exporta o componente para que possa ser utilizado em outras partes da aplicação.
+export default TarefasScreen;

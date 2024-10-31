@@ -1,6 +1,5 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import AdicionarTarefa from '../components/AdicionarTarefa';
 import ListaTarefas from '../components/ListaTarefas';
 import LoginScreen from '../screens/LoginScreen';
 
